@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
