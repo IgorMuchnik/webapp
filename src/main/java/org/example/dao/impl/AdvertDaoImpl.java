@@ -14,7 +14,7 @@ public class AdvertDaoImpl implements AdvertDao {
     try (Connection cn = ConnectionFactory.getConnection();
          PreparedStatement ps = cn.prepareStatement("INSERT INTO adverts (user_id, title, body, category, phone) " +
                  "VALUES (?, ?, ?, ?, ?)")) {
-      ps.setString(1, advert.getUserId() + "");
+      ps.setInt(1, advert.getUserId());
       ps.setString(2, advert.getTitle());
       ps.setString(3, advert.getBody());
       ps.setString(4, advert.getCategory());
@@ -88,12 +88,13 @@ public class AdvertDaoImpl implements AdvertDao {
 
   private Advert parseResultSet(ResultSet rs) throws SQLException {
     Advert advert = new Advert();
-      advert.setId(rs.getLong("id"));
-      advert.setId(rs.getLong("user_id"));
+      advert.setId(rs.getString("id"));
+      advert.setUserId(rs.getInt("user_id"));
       advert.setTitle(rs.getString("title"));
       advert.setBody(rs.getString("body"));
       advert.setCategory(rs.getString("category"));
       advert.setPhoneNumber(rs.getString("phone"));
+      advert.setCreated(rs.getDate("created"));
     return advert;
   }
 }
