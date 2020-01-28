@@ -13,7 +13,6 @@ import org.example.service.UserService;
 public class UserServiceImpl implements UserService {
 
   private UserDao userDaoImpl = new UserDaoImpl();
-  private AdvertDao advertDaoImpl = new AdvertDaoImpl();
 
   @Override
   public void createUser(User user) {
@@ -28,16 +27,11 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getById(long userId) {
-    return userDaoImpl.getById(userId);
+    return userDaoImpl.getUserById(userId);
   }
 
   @Override
   public List<User> getAll() {
-    return userDaoImpl.getAll();
-  }
-  
-  @Override
-  public List<Advert> getAdvertsByUser(long userId) throws SQLException {
-    return advertDaoImpl.getAdvertsByUser(userId);
+    return userDaoImpl.getAllUsers();
   }
 }

@@ -1,7 +1,7 @@
 package org.example.dao.impl;
 
 import org.example.dao.UserDao;
-import org.example.model.Category;
+import org.example.util.Category;
 import org.example.util.ConnectionFactory;
 import org.example.model.User;
 
@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao {
+public class    UserDaoImpl implements UserDao {
 
     @Override
     public void createUser(User user) {
@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement ps = cn.prepareStatement("DELETE FROM users WHERE id=?")) {
 
             ps.setLong(1, userId);
-            User user = getById(userId);
+            User user = getUserById(userId);
 
             int i = ps.executeUpdate();
             if (i == 1) {
@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getById(long userId) {
+    public User getUserById(long userId) {
         try {
             Connection cn = ConnectionFactory.getConnection();
             Statement st = cn.createStatement();
@@ -72,7 +72,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         try (Connection cn = ConnectionFactory.getConnection();
              Statement st = cn.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM users")) {

@@ -75,20 +75,4 @@ public class UserController {
                      .build();
     }
   }
-
-  @GET
-  @Path("/{id}/adverts")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getAdvertsByUser(@PathParam("id") long userId) {
-    try {
-      return Response.status(Status.OK)
-                     .entity(userService.getAdvertsByUser(userId))
-                     .build();
-    } catch (Exception e) {
-      return Response.status(Status.INTERNAL_SERVER_ERROR)
-                     .entity(e.toString())
-                     .build();
-    }
-  }
-
 }

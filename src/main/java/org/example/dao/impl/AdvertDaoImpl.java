@@ -1,10 +1,6 @@
 package org.example.dao.impl;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayDeque;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.dao.AdvertDao;
@@ -15,29 +11,72 @@ public class AdvertDaoImpl implements AdvertDao {
 
   @Override
   public boolean createAdvert(Advert advert) {
-    return false;
+    try (Connection cn = ConnectionFactory.getConnection();
+         PreparedStatement ps = cn.prepareStatement("INSERT INTO adverts (user_id, title, body, category, phone) " +
+                 "VALUES (?, ?, ?, ?, ?)")) {
+      ps.setString(1, advert.getUserId() + "");
+      ps.setString(2, advert.getTitle());
+      ps.setString(3, advert.getBody());
+      ps.setString(4, advert.getCategory());
+      ps.setString(5, advert.getPhoneNumber());
+
+      int i = ps.executeUpdate();
+
+      if (i != 1) {
+        throw new SQLException();
+      }
+
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+
+    return true;
   }
 
   @Override
-  public Advert deleteAdvert(long id) {
+  public Advert deleteAdvert(long advertId) {
+    try (Connection cn = ConnectionFactory.getConnection();
+         Statement st = cn.createStatement();
+         PreparedStatement ps = cn.prepareStatement("DELETE FROM adverts WHERE id=?")) {
+
+      ps.setLong(1, advertId);
+      Advert advert = getAdvertById(advertId);
+
+      int i = ps.executeUpdate();
+      if (i == 1) {
+        return advert;
+      }
+
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+
     return null;
   }
 
   @Override
-  public Advert getById(long advertId) {
+  public Advert getAdvertById(long advertId) {
+    try {
+      Connection cn = ConnectionFactory.getConnection();
+      Statement st = cn.createStatement();
+      ResultSet rs = st.executeQuery("SELECT * FROM adverts WHERE id=" + advertId);
+
+      while (rs.next()) {
+        return parseResultSet(rs);
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+
     return null;
+
   }
 
   @Override
-  public List<Advert> getAll() {
-    return null;
-  }
-
-  @Override
-  public List<Advert> getAdvertsByUser(long userId) throws SQLException {
+  public List<Advert> getAdvertsByUserId(long userId) throws SQLException {
     Connection cn = ConnectionFactory.getConnection();
     Statement st = cn.createStatement();
-    ResultSet rs = st.executeQuery("SELECT * FROM adverts WHERE id=" + userId);
+    ResultSet rs = st.executeQuery("SELECT * FROM adverts WHERE user_id=" + userId);
 
     List<Advert> list = new ArrayList();
     while (rs.next()) {
@@ -47,13 +86,14 @@ public class AdvertDaoImpl implements AdvertDao {
     return list;
   }
 
-  private Advert parseResultSet(ResultSet rs) {
+  private Advert parseResultSet(ResultSet rs) throws SQLException {
     Advert advert = new Advert();
-//      user.setId(rs.getLong("id"));
-//      user.setName(rs.getString("name"));
-//      user.setSurname(rs.getString("surname"));
-//      user.setEmail(rs.getString("email"));
-//      user.setCategory(Category.valueOf(rs.getString("category")));
+      advert.setId(rs.getLong("id"));
+      advert.setId(rs.getLong("user_id"));
+      advert.setTitle(rs.getString("title"));
+      advert.setBody(rs.getString("body"));
+      advert.setCategory(rs.getString("category"));
+      advert.setPhoneNumber(rs.getString("phone"));
     return advert;
   }
 }

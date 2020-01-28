@@ -10,5 +10,4 @@ public interface UserService {
   User deleteUser(long userId);
   User getById(long userId);
   List<User> getAll();
-  List<Advert> getAdvertsByUser(long userId) throws SQLException;
 }

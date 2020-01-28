@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.util;
 
 public enum Category {
     LEGAL,

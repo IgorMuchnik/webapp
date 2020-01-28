@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Advert {
-
     private long id;
-    private String header;
+    private long userId;
+    private String title;
     private String body;
     private String category;
     private String phoneNumber;
