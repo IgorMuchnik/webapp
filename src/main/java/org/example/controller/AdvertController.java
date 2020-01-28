@@ -58,7 +58,7 @@ public class AdvertController {
     }
 
     @GET
-    @Path("/{id}/adverts")
+    @Path("user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAdvertsByUser(@PathParam("id") long userId) {
         try {

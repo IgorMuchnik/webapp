@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Advert {
-    private String id;
+    private int id;
     private int userId;
     private String title;
     private String body;

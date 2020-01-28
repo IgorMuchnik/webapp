@@ -88,7 +88,7 @@ public class AdvertDaoImpl implements AdvertDao {
 
   private Advert parseResultSet(ResultSet rs) throws SQLException {
     Advert advert = new Advert();
-      advert.setId(rs.getString("id"));
+      advert.setId(rs.getInt("id"));
       advert.setUserId(rs.getInt("user_id"));
       advert.setTitle(rs.getString("title"));
       advert.setBody(rs.getString("body"));
